@@ -1,0 +1,35 @@
+```{r}
+setwd("~/RStudio/TrumpTweets")
+library(readr)
+data <- read_csv("~/RStudio/TrumpTweets/realDonaldTrump_tweets.csv")
+```
+
+```{r}
+str(data)
+```
+```{r}
+names <- c("id_num", "create_time", "tweet_text")
+colnames(data) <- names
+str(data)
+```
+```{r}
+data$tweet_text <- substring(data$tweet_text, 2)
+head(data$tweet_text)
+```
+```{r}
+data$tweet_text <- gsub("[[:punct:]]", "", data$tweet_text)
+data$tweet_text <- sapply(data$tweet_text, tolower)
+head(data$tweet_text)
+```
+```{r}
+split_tweets <- lapply(data$tweet_text, strsplit, split = ",| ")
+head(split_tweets)
+```
+```{r}
+split_tweets <- unlist(split_tweets)
+#table(sort(split_tweets))
+s_tweets <- gsub("^[[:digit:]]+", "", split_tweets)
+table(sort(s_tweets, decreasing = TRUE))
+```
+
+
